@@ -15,25 +15,27 @@ var shipRadius = 15;
 ctx.canvas.width  = window.innerWidth - 2;
 ctx.canvas.height = window.innerHeight - 2;
 
-let x = (ctx.canvas.width - 2) / 2;
-let y = (ctx.canvas.height - 2 ) / 2;
+let xShip = (ctx.canvas.width - 2) / 2;
+let yShip = (ctx.canvas.height - 2 ) / 2;
+let xBolt = 0;
+let yBolt = 0;
 
 function drawShip(engineGlow = false) {
     ctx.save();
 
-    ctx.translate(x, y + 15);
+    ctx.translate(xShip, yShip + 15);
     ctx.rotate(angle * Math.PI / 180);
-    ctx.translate(-x, -(y +15));
+    ctx.translate(-xShip, -(yShip +15));
 
     ctx.beginPath();
     ctx.shadowBlur = 10;
     ctx.shadowColor = "blue";
     ctx.lineWidth = 2;
-    ctx.moveTo(x, y);
-    ctx.lineTo(x + 12, y + 30);
-    ctx.lineTo(x, y + 22);
-    ctx.lineTo(x - 12, y + 30);
-    ctx.lineTo(x, y);
+    ctx.moveTo(xShip, yShip);
+    ctx.lineTo(xShip + 12, yShip + 30);
+    ctx.lineTo(xShip, yShip + 22);
+    ctx.lineTo(xShip - 12, yShip + 30);
+    ctx.lineTo(xShip, yShip);
     ctx.closePath();    
     ctx.strokeStyle = "rgba(50, 187, 46, 1)";
     ctx.stroke();
@@ -51,19 +53,19 @@ function drawEngineGlow() {
     ctx.save();
     ctx.beginPath();
 
-    ctx.translate(x, y + 15);
+    ctx.translate(xShip, yShip + 15);
     ctx.rotate(angle * Math.PI / 180);
-    ctx.translate(-x, -(y +15));
+    ctx.translate(-xShip, -(yShip +15));
 
     ctx.shadowBlur = 10;
     ctx.shadowColor = "white";
     ctx.lineWidth = 1;
-    ctx.moveTo(x, y + 24);
-    ctx.lineTo(x + 6, y + 28);
-    ctx.lineTo(x, y + 30);
-    ctx.lineTo(x - 6, y + 28);
-    ctx.lineTo(x, y + 24);
-    ctx.lineTo(x, y + 32);
+    ctx.moveTo(xShip, yShip + 24);
+    ctx.lineTo(xShip + 6, yShip + 28);
+    ctx.lineTo(xShip, yShip + 30);
+    ctx.lineTo(xShip - 6, yShip + 28);
+    ctx.lineTo(xShip, yShip + 24);
+    ctx.lineTo(xShip, yShip + 32);
 
     ctx.strokeStyle = "rgb(132, 220, 255)";
     ctx.stroke();
@@ -73,39 +75,82 @@ function drawEngineGlow() {
     ctx.closePath(); 
     ctx.restore();
 
-    x += Math.cos( (angle - 90) * Math.PI / 180);
-    y += Math.sin( (angle - 90) * Math.PI / 180);
+    xShip += Math.cos( (angle - 90) * Math.PI / 180);
+    yShip += Math.sin( (angle - 90) * Math.PI / 180);
 }
 
-function drawBolt(xPath = 0, yPath = 0) {
+function drawBolt(x, y, boltAngle) {
+    xBolt = x;
+    yBolt = y;
+
     ctx.save();
     ctx.beginPath(); 
-console.log(yPath);
-    // ctx.translate(x, y);
-    // ctx.rotate(angle * Math.PI / 180);
-    // ctx.translate(-x, -y);
-    
+
+    if (xBolt === xShip && yBolt === yShip) {
+        ctx.rotate(angle * Math.PI / 180);
+    }
 
     ctx.lineWidth = 3;
     ctx.shadowBlur = 3;
     ctx.shadowColor = "rgb(174, 255, 0)";
-    ctx.moveTo(x, y + 3);
-    ctx.arc(xPath, yPath + 3, 1, 0, Math.PI * 2);
-    // ctx.closePath();    
+    ctx.moveTo(xBolt, yBolt + 3);
+    ctx.arc(xBolt, yBolt + 3, 1, 0, 2 * Math.PI);   
     ctx.strokeStyle = "rgba(255, 255, 255, 1)";
     ctx.stroke();
 
-    // x += Math.cos( (angle - 90) * Math.PI / 180);
-    // y += Math.sin( (angle - 90) * Math.PI / 180);
-    xPath += 0;
-    yPath += -0.5;
     
-    ctx.restore();
-    // setInterval(drawBolt(xPath, yPath), 10);
-    if (yPath > 0) {
-        requestAnimationFrame(drawBolt(xPath, yPath));
+    xBolt += Math.cos( (boltAngle - 90) * Math.PI / 180);
+    yBolt += Math.sin( (boltAngle - 90) * Math.PI / 180);
+    
+    if (xBolt > 0 && yBolt > 0) {
+        setTimeout( () => {
+            requestAnimationFrame(() => {drawBolt(xBolt, yBolt, boltAngle)});
+        }, 15);
     }
+
+    ctx.restore();
 }
+
+class Bolt {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    drawMe(x, y, angle) {
+        ctx.save();
+        ctx.beginPath(); 
+
+        if (x === xShip && y === yShip) {
+            ctx.rotate(angle * Math.PI / 180);
+        }
+
+        ctx.lineWidth = 3;
+        ctx.shadowBlur = 3;
+        ctx.shadowColor = "rgb(174, 255, 0)";
+        ctx.moveTo(x, y + 3);
+        ctx.arc(x, y + 3, 1, 0, 2 * Math.PI);   
+        ctx.strokeStyle = "rgba(255, 255, 255, 1)";
+        ctx.stroke();
+
+        ctx.restore();
+    }
+
+    moveMe(x, y, boltAngle) {
+        ctx.save();
+        x += Math.cos( (boltAngle - 90) * Math.PI / 180);
+        y += Math.sin( (boltAngle - 90) * Math.PI / 180);
+        
+        if (x > 0 && y > 0) {
+            setTimeout( () => {
+                requestAnimationFrame(() => {this.moveMe});
+            }, 15);
+        }
+        ctx.restore();
+    }
+
+}
+
 
 function drawCircle() {
     ctx.beginPath();
@@ -131,12 +176,14 @@ function draw() {
     } else if (rotateLeft) {
         angle -= 1.5;
     } else if (shoot) {
-        drawBolt(x, y);
+        // drawBolt(xShip, yShip, angle); 
+        let bolt = new Bolt(xShip, yShip);
     } else if (thrust) {
         drawShip(thrust);
     }
 
     drawShip(thrust);
+    moveBolts();
     drawCircle();
     // drawBolt();
 
@@ -153,7 +200,7 @@ function keyDownHandler(event) {
     } else if (event.key == "Up" || event.key == "ArrowUp") {
         thrust = true;
     } else if (event.key == "Spacebar" || event.key == " ") {
-        shoot = true;
+            shoot = true;
     }
 }
 
