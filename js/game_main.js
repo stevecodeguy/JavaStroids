@@ -1,6 +1,5 @@
 var canvas = document.getElementById("gameCanvas");
 var ctx = canvas.getContext("2d");
-let test;
 
 var rotateRight = false;
 var rotateLeft = false;
