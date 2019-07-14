@@ -31,8 +31,10 @@ function drawShip(engineGlow = false) {
         ctx.restore();
 
         if (engineGlow) {
-            requestAnimationFrame(drawEngineGlow);
-        } 
+            setTimeout(function() {
+                window.requestAnimationFrame(drawEngineGlow);
+            }, 15);
+        }
     }
 }
 
@@ -77,11 +79,12 @@ class Remnants {
         this.xOrigin = x;
         this.yOrigin = y;
         this.distance = 0;
+        this.speed = 0;
     }
 
     addRemnant(x, y, angle){
         if (alive){
-            for (let i = 0; i < randPop(); i++)
+            for (let i = 0; i < 150; i++)
             {
                 const temp = {
                     id : remnants.length,
@@ -106,7 +109,7 @@ class Remnants {
                 let xOrigin = remnants[i].xOrigin;
                 let yOrigin = remnants[i].yOrigin;
                 let distance = remnants[i].distance;
-    
+
                 if (distance < randA() * 30) {
                     x += Math.cos( (angle - 90) * Math.PI / 180);
                     y += Math.sin( (angle - 90) * Math.PI / 180);
@@ -152,6 +155,9 @@ class Remnants {
                 remnants[i].yOrigin = yOrigin;
                 remnants[i].distance++;
             };
-        alive = false;
+            
+        if (alive) {
+            livesAdjust();
+        }
     };
 }

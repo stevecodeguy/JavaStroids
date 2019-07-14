@@ -50,6 +50,6 @@ function randSize(){
 
 function randPop(){
     const min = 10;
-    const max = 30;  
+    const max = 40;  
     return Math.floor(Math.random() * (max - min) + min);
 }

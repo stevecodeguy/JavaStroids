@@ -1,5 +1,9 @@
+// Game variables
+
 let pause = false;
 let gameOver = false;
+let points = 0;
+let lives = 3;
 
 //Ship variables
 
@@ -30,14 +34,14 @@ let asteroids = new Asteroid(randX(), randY(), randA());
 asteroids.addAsteroid(rockSize, asteroidCount);
 
 const endGameMessage = time => new Promise(resolve => {
-    if (!alive) {
+    if (lives < 1) {
         timeOut = setTimeout(() => {
             ctx.save();
-            ctx.font = "50px Terminal";
+            ctx.font = "50px Lucida Console";
             ctx.fillStyle = "white";
             ctx.textAlign = "center";
             ctx.fillText("GAME OVER", (ctx.canvas.width - 2) / 2, (ctx.canvas.height - 2) / 2);
-            ctx.font = "30px Terminal";
+            ctx.font = "30px Lucida Console";
             ctx.fillText("Press Space to play again!", (ctx.canvas.width - 2) / 2, ((ctx.canvas.height - 2) / 2) + 60);
             ctx.restore();
             clearTimeout(timeOut);
@@ -46,100 +50,154 @@ const endGameMessage = time => new Promise(resolve => {
     };
 });
 
+const aliveAgain = time => new Promise(resolve => {
+    timeOut = setTimeout(() => {
+        alive = true;
+        remnants = [];
+        clearTimeout(timeOut);
+        resolve();
+    } , time);
+});
+
+function pauseMessage() {
+    if (!gameOver){
+        ctx.save();
+        ctx.font = "50px Lucida Console";
+        ctx.fillStyle = "white";
+        ctx.textAlign = "center";
+        ctx.fillText("PAUSED", (ctx.canvas.width - 2) / 2, (ctx.canvas.height - 2) / 2);
+        ctx.font = "30px Lucida Console";
+        ctx.fillText("Press P to unpause", (ctx.canvas.width - 2) / 2, ((ctx.canvas.height - 2) / 2) + 60);
+        ctx.restore();
+    };
+};
+
 function draw() {
-    collideBoltAsteroid();
-    collideShipAsteroid();
+    if (pause) {
+        if (!gameOver) {
+            pauseMessage();
+        }
+    } else {
+        collideBoltAsteroid();
+        collideShipAsteroid();
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // if(x + dx > canvas.width-shipRadius || x + dx < shipRadius) {
-    //     dx = -dx;
-    // }
-    // if(y + dy > canvas.height-(shipRadius * 2) || y + dy < 0) {
-    //     dy = -dy;
-    // }
+        // if(x + dx > canvas.width-shipRadius || x + dx < shipRadius) {
+        //     dx = -dx;
+        // }
+        // if(y + dy > canvas.height-(shipRadius * 2) || y + dy < 0) {
+        //     dy = -dy;
+        // }
 
-    if (rotateRight) {
-        angle += 1.5;
-    } 
-    if (rotateLeft) {
-        angle -= 1.5;
-    } 
-    if (shoot) {
+        if (rotateRight) {
+            angle += 1.5;
+        } 
+        if (rotateLeft) {
+            angle -= 1.5;
+        } 
+        if (shoot) {
+            if (alive) {
+                if((new Date().getTime() - lastShot) >= 350) {
+                    lastShot = new Date().getTime();
+                    bolt.addBolt(xShip, yShip, angle);
+                }
+            }
+        } 
+
+        if (thrust) {
+            drawShip(thrust);
+        }
+        
         if (alive) {
-            if((new Date().getTime() - lastShot) >= 350) {
-                lastShot = new Date().getTime();
-                bolt.addBolt(xShip, yShip, angle);
+            drawShip(thrust);
+        } else {
+            boom.drawShipPop();
+
+            if (gameOver) {
+                endGameMessage(2000).then( () => pause = true);
+            } else {
+                // Reset ship after death
+                alive = false;
+                shoot = false;
+                angle = 0;
+                xDrift = 0;
+                yDrift = 0;
+                xShip = (ctx.canvas.width - 2) / 2;
+                yShip = (ctx.canvas.height - 2 ) / 2;
+                aliveAgain(6000);
+                // setTimeout(() => {
+                //     alive = true;
+                //     remnants = [];
+                // }, 6000);
             }
         }
-    } 
-    if (thrust) {
-        drawShip(thrust);
-    }
-    
-    if (alive) {
-        drawShip(thrust);
-    } else {
-        boom.drawShipPop();
- 
-        if (!gameOver) {
-            endGameMessage(2000).then( () => pause = true);
-            gameOver = true;
+
+        for (let i = 0; i < 3; i++){
+            bolt.drawBolts();
         }
+
+        asteroids.drawAsteroids();
+        stats();
+
+        if (xShip < 0) {
+            xShip = ctx.canvas.width;
+        } else if (xShip > ctx.canvas.width) {
+            xShip = 0;
+        }
+
+        if (yShip < 0) {
+            yShip = ctx.canvas.height;
+        } else if (yShip > ctx.canvas.height) {
+            yShip = 0;
+        }
+
+        xShip += xDrift;
+        yShip += yDrift;
     }
-
-    for (let i = 0; i < 3; i++){
-        bolt.drawBolts();
-    }
-
-    asteroids.drawAsteroids();
-    
-
-    if (xShip < 0) {
-        xShip = ctx.canvas.width;
-    } else if (xShip > ctx.canvas.width) {
-        xShip = 0;
-    }
-
-    if (yShip < 0) {
-        yShip = ctx.canvas.height;
-    } else if (yShip > ctx.canvas.height) {
-        yShip = 0;
-    }
-
-    xShip += xDrift;
-    yShip += yDrift;
 }
 
 function keyDownHandler(event) {
     // event.preventDefault();
-    if (alive) {
-        switch(event.key){
-            case "Right":
-            case "ArrowRight":
-                    rotateRight = true;
-                    break;
-            case "Left":
-            case "ArrowLeft":
-                    rotateLeft = true;
-                    break;
-            case "Up":
-            case "ArrowUp":
-                    thrust = true;
-                    break;
-            case "Spacebar":
-            case " ":
+    switch(event.key){
+        case "Right":
+        case "ArrowRight":
+            rotateRight = true;
+            break;
+        case "Left":
+        case "ArrowLeft":
+            rotateLeft = true;
+            break;
+        case "Up":
+        case "ArrowUp":
+            thrust = true;
+            break;
+        case "Spacebar":
+        case " ":
+            {
+                if (gameOver && pause) {
+                    if (event.key === "Spacebar" || event.key === " ") {
+                        reInitGame();
+                    }
+                } else {
                     shoot = true;
-                    break;
-            default:
-                return false;
-        }
-    } else {
-        if (gameOver && pause) {
-            if (event.key === "Spacebar" || event.key === " ") {
-                initGame();
+                }
             }
-        }
+            break;
+        case "p":
+            {
+                if (gameOver) {
+                    break;
+                }
+                if (pause) {
+                    pause = false;
+                } else {
+                    pause = true;
+                }
+            }
+            break;
+        default:
+            return false;
     }
 }
 
@@ -167,8 +225,9 @@ function keyUpHandler(event) {
     }
 }
 
-function initGame() {
+function reInitGame() {
     alive = true; 
+    lives = 3;
     pause = false;
     gameOver = 0;
 
@@ -195,21 +254,17 @@ function initGame() {
 
     ctx.beginPath();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // playGame = window.requestAnimationFrame(step);
 }
 
 function step() {
-    if (!pause) {
-        draw();
-    }
+    draw();
     playGame = window.requestAnimationFrame(step);
 }
- 
+
 playGame = window.requestAnimationFrame(step);
 
 window.addEventListener("keydown", keyDownHandler, false);
 window.addEventListener("keyup", keyUpHandler, false, );
-
 
 window.addEventListener('resize', resizeTimer);
 
