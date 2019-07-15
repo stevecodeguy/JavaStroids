@@ -19,6 +19,7 @@ class Bolt {
             distance : 0
         };
         activeBolt.push(temp);
+        laser.play();
     };
 
     drawBolts() {

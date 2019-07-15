@@ -7,8 +7,14 @@
     <title>JavaScript Game</title>
 
     <link rel="stylesheet" href="./css/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/howler@2.1.2/dist/howler.min.js"></script>
+    
 </head>
 <body>
+    <header>
+        <h1>Asteroids</h1>
+        <h3>An homage to the Atari 800 XL version.</h3>
+    </header>
     <div class="wrapper">
         <canvas id="gameCanvas" 
             style="border:1px solid #c3c3c3;">
@@ -17,6 +23,7 @@
     </div>
 </body>
 <script src="./js/canvas.js"></script>
+<script src="./js/sounds.js"></script>
 <script src="./js/random.js"></script>
 <script src="./js/stats.js"></script>
 <script src="./js/ship.js"></script>

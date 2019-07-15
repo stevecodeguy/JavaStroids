@@ -1,8 +1,11 @@
+// const {Howl, Howler} = require('howler');
+
 // Game variables
 
 let pause = false;
 let gameOver = false;
-let points = 0;
+let score = 0;
+let nextLife = 5000;
 let lives = 3;
 
 //Ship variables
@@ -50,15 +53,6 @@ const endGameMessage = time => new Promise(resolve => {
     };
 });
 
-const aliveAgain = time => new Promise(resolve => {
-    timeOut = setTimeout(() => {
-        alive = true;
-        remnants = [];
-        clearTimeout(timeOut);
-        resolve();
-    } , time);
-});
-
 function pauseMessage() {
     if (!gameOver){
         ctx.save();
@@ -74,7 +68,9 @@ function pauseMessage() {
 
 function draw() {
     if (pause) {
-        if (!gameOver) {
+        if (gameOver) {
+            endGameMessage();
+        } else {
             pauseMessage();
         }
     } else {
@@ -113,23 +109,21 @@ function draw() {
             drawShip(thrust);
         } else {
             boom.drawShipPop();
-
-            if (gameOver) {
-                endGameMessage(2000).then( () => pause = true);
-            } else {
-                // Reset ship after death
-                alive = false;
-                shoot = false;
-                angle = 0;
-                xDrift = 0;
-                yDrift = 0;
-                xShip = (ctx.canvas.width - 2) / 2;
-                yShip = (ctx.canvas.height - 2 ) / 2;
-                aliveAgain(6000);
-                // setTimeout(() => {
-                //     alive = true;
-                //     remnants = [];
-                // }, 6000);
+            if (remnants.length === 0)
+            {
+                if (gameOver) {
+                    endGameMessage(1000)
+                        .then( () => pause = true);
+                } else {
+                    // Reset ship after death
+                    shoot = false;
+                    angle = 0;
+                    xDrift = 0;
+                    yDrift = 0;
+                    xShip = (ctx.canvas.width - 2) / 2;
+                    yShip = (ctx.canvas.height - 2 ) / 2;
+                    alive = true;
+                }
             }
         }
 
@@ -170,6 +164,7 @@ function keyDownHandler(event) {
             break;
         case "Up":
         case "ArrowUp":
+            thruster.play();
             thrust = true;
             break;
         case "Spacebar":
@@ -214,6 +209,7 @@ function keyUpHandler(event) {
                 break;
         case "Up":
         case "ArrowUp":
+                thruster.stop();
                 thrust = false;
                 break;
         case "Spacebar":
@@ -262,6 +258,7 @@ function step() {
 }
 
 playGame = window.requestAnimationFrame(step);
+theme.play();
 
 window.addEventListener("keydown", keyDownHandler, false);
 window.addEventListener("keyup", keyUpHandler, false, );

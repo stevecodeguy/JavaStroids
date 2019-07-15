@@ -39,36 +39,38 @@ function drawShip(engineGlow = false) {
 }
 
 function drawEngineGlow() {
-    ctx.save();
-    ctx.beginPath();
+    if (alive) {
+        ctx.save();
+        ctx.beginPath();
 
-    ctx.translate(xShip, yShip + 15);
-    ctx.rotate(angle * Math.PI / 180);
-    ctx.translate(-xShip, -(yShip +15));
+        ctx.translate(xShip, yShip + 15);
+        ctx.rotate(angle * Math.PI / 180);
+        ctx.translate(-xShip, -(yShip +15));
 
-    ctx.shadowBlur = 10;
-    ctx.shadowColor = "white";
-    ctx.lineWidth = 1;
-    ctx.moveTo(xShip, yShip + 24);
-    ctx.lineTo(xShip + 6, yShip + 28);
-    ctx.lineTo(xShip, yShip + 30);
-    ctx.lineTo(xShip - 6, yShip + 28);
-    ctx.lineTo(xShip, yShip + 24);
-    ctx.lineTo(xShip, yShip + 32);
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = "white";
+        ctx.lineWidth = 1;
+        ctx.moveTo(xShip, yShip + 24);
+        ctx.lineTo(xShip + 6, yShip + 28);
+        ctx.lineTo(xShip, yShip + 30);
+        ctx.lineTo(xShip - 6, yShip + 28);
+        ctx.lineTo(xShip, yShip + 24);
+        ctx.lineTo(xShip, yShip + 32);
 
-    ctx.strokeStyle = "rgb(132, 220, 255)";
-    ctx.stroke();
-    ctx.fillStyle = "rgb(132, 220, 255)";
-    ctx.fill();
+        ctx.strokeStyle = "rgb(132, 220, 255)";
+        ctx.stroke();
+        ctx.fillStyle = "rgb(132, 220, 255)";
+        ctx.fill();
 
-    ctx.closePath(); 
-    ctx.restore();
+        ctx.closePath(); 
+        ctx.restore();
 
-    xDrift += (Math.cos( (angle - 90) * Math.PI / 180)/30);
-    yDrift += (Math.sin( (angle - 90) * Math.PI / 180)/30);
+        xDrift += (Math.cos( (angle - 90) * Math.PI / 180)/30);
+        yDrift += (Math.sin( (angle - 90) * Math.PI / 180)/30);
 
-    xShip += Math.cos( (angle - 90) * Math.PI / 180);
-    yShip += Math.sin( (angle - 90) * Math.PI / 180);
+        xShip += Math.cos( (angle - 90) * Math.PI / 180);
+        yShip += Math.sin( (angle - 90) * Math.PI / 180);
+    }
 }
 
 class Remnants {
@@ -83,81 +85,73 @@ class Remnants {
     }
 
     addRemnant(x, y, angle){
-        if (alive){
-            for (let i = 0; i < 150; i++)
-            {
-                const temp = {
-                    id : remnants.length,
-                    x : x,   
-                    y : y,
-                    angle : randA(),
-                    xOrigin : x,
-                    yOrigin : y,
-                    distance : 0
-                };
-                remnants.push(temp);
-            }
-        }
+        for (let i = 0; i < 25; i++) {
+            const temp = {
+                id : remnants.length,
+                x : x,   
+                y : y,
+                angle : randA(),
+                xOrigin : x,
+                yOrigin : y,
+                distance : 0
+            };
+            remnants.push(temp);
+        }     
     };
 
     drawShipPop() {   
-        for (let i = 0; i < remnants.length; i++)
-            {
-                let x = remnants[i].x;
-                let y = remnants[i].y;
-                let angle = remnants[i].angle;
-                let xOrigin = remnants[i].xOrigin;
-                let yOrigin = remnants[i].yOrigin;
-                let distance = remnants[i].distance;
+        for (let i = 0; i < remnants.length; i++) {
+            let x = remnants[i].x;
+            let y = remnants[i].y;
+            let angle = remnants[i].angle;
+            let xOrigin = remnants[i].xOrigin;
+            let yOrigin = remnants[i].yOrigin;
+            let distance = remnants[i].distance;
 
-                if (distance < randA() * 30) {
-                    x += Math.cos( (angle - 90) * Math.PI / 180);
-                    y += Math.sin( (angle - 90) * Math.PI / 180);
-    
-                    ctx.save();
-                    ctx.translate(x, y + 15);
-                    ctx.rotate(angle * Math.PI / 180);
-                    ctx.translate(-x, -(y +15));
-                    
-                    ctx.beginPath(); 
-    
-                    ctx.lineWidth = 3;
-                    ctx.shadowBlur = 3;
-                    ctx.shadowColor = "rgb(255, 255, 255)";
-                    ctx.moveTo(x, y + 3);
-                    ctx.arc(x, y + 3, 1, 0, 2 * Math.PI);   
-                    ctx.strokeStyle = "rgba(100, 255, 255, 1)";
-                    ctx.stroke();
-    
-                    ctx.restore(); 
-    
-                    if (x < -10) {
-                        x = ctx.canvas.width;
-                    } else if (x > ctx.canvas.width + 10) {
-                        x = 0;
-                    }
+            if (distance < randA() * 30) {
+                x += Math.cos( (angle - 90) * Math.PI / 180);
+                y += Math.sin( (angle - 90) * Math.PI / 180);
+
+                ctx.save();
+                ctx.translate(x, y + 15);
+                ctx.rotate(angle * Math.PI / 180);
+                ctx.translate(-x, -(y +15));
                 
-                    if (y < -10) {
-                        y = ctx.canvas.height;
-                    } else if (y > ctx.canvas.height + 10) {
-                        y = 0;
-                    }
-    
-                } else {
-                    remnants.splice(i, 1);
-                    break;
+                ctx.beginPath(); 
+
+                ctx.lineWidth = 3;
+                ctx.shadowBlur = 3;
+                ctx.shadowColor = "rgb(255, 255, 255)";
+                ctx.moveTo(x, y + 3);
+                ctx.arc(x, y + 3, 1, 0, 2 * Math.PI);   
+                ctx.strokeStyle = "rgba(100, 255, 255, 1)";
+                ctx.stroke();
+
+                ctx.restore(); 
+
+                if (x < -10) {
+                    x = ctx.canvas.width;
+                } else if (x > ctx.canvas.width + 10) {
+                    x = 0;
                 }
-    
-                remnants[i].x = x;
-                remnants[i].y = y;
-                remnants[i].angle = angle;
-                remnants[i].xOrigin = xOrigin;
-                remnants[i].yOrigin = yOrigin;
-                remnants[i].distance++;
-            };
             
-        if (alive) {
-            livesAdjust();
-        }
+                if (y < -10) {
+                    y = ctx.canvas.height;
+                } else if (y > ctx.canvas.height + 10) {
+                    y = 0;
+                }
+
+            } else {
+                remnants.splice(i, 1);
+                break;
+            }
+
+            remnants[i].x = x;
+            remnants[i].y = y;
+            remnants[i].angle = angle;
+            remnants[i].xOrigin = xOrigin;
+            remnants[i].yOrigin = yOrigin;
+            remnants[i].distance++;
+        };
     };
 }

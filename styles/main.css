@@ -1,0 +1,20 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body {
+  background: url("./img/nathan-anderson-108136-unsplash.jpg");
+  background-size: cover;
+  color: #554f0f;
+}
+
+.wrapper {
+  background-color: rgba(0, 0, 0, 0.45);
+  height: 100%;
+  width: 100%;
+}
+
+/*# sourceMappingURL=main.css.map */

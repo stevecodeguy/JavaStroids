@@ -1,10 +1,28 @@
+function asteroidPolyPoints(polyPoints){
+    let points = [];
+    for (let i = 0; i < randPop(); i++) {
+        degreePosition = randA();
+        points.push(degreePosition);
+    }
+
+    function compareNumbers(a, b)
+    {
+        return a - b;
+    }
+
+    return points.sort(compareNumbers);
+    // console.log (points)
+};
+
 class Asteroid {
     constructor(x, y, angle) {
         this.x = x;
         this.y = y;
         this.angle = angle;
         this.rockSize = rockSize;
+        this.polygonPoints = asteroidPolyPoints(randPop());
     }
+    
 
     addAsteroid(rockSize, number, splitAsteroid = false, newX, newY){
         let temp = {};
@@ -17,7 +35,8 @@ class Asteroid {
                     x : newX,   
                     y : newY,
                     angle : randA(),
-                    rockSize : rockSize
+                    rockSize : rockSize,
+                    polygonPoints : asteroidPolyPoints(randPop())
                 };
             } else {
                 temp = {
@@ -25,7 +44,8 @@ class Asteroid {
                     x : randXAsteroid(),   
                     y : randYAsteroid(),
                     angle : randA(),
-                    rockSize : rockSize
+                    rockSize : rockSize,
+                    polygonPoints : asteroidPolyPoints(randPop())
                 };
             }
             arrayAsteroids.push(temp);
@@ -39,9 +59,11 @@ class Asteroid {
             let y = arrayAsteroids[i].y;
             let angle = arrayAsteroids[i].angle;
             let rockSize = arrayAsteroids[i].rockSize;
+            let polygonPoints = arrayAsteroids[i].polygonPoints;
 
             x += Math.cos( (angle - 90) * Math.PI / 180);
             y += Math.sin( (angle - 90) * Math.PI / 180);
+
 
             ctx.save();
             ctx.translate(x, y + 15);
@@ -56,7 +78,6 @@ class Asteroid {
             ctx.arc(x, y, rockSize, 0, 2 * Math.PI);
             ctx.fillStyle = "rgba(71, 66, 13) ";
             ctx.fill();
-            
             ctx.restore(); 
 
 
