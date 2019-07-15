@@ -5,24 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>JavaScript Asteroids Game</title>
-    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="styles/main.css">
 
-    <link rel="apple-touch-icon" sizes="57x57" href="./img/favicons/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="./img/favicons/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="./img/favicons/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="./img/favicons/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="./img/favicons/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="./img/favicons/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="./img/favicons/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="./img/favicons/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="./img/favicons/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="./img/favicons/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="./img/favicons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="./img/favicons/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="./img/favicons/favicon-16x16.png">
-    <link rel="manifest" href="./img/favicons/manifest.json">
+    <link rel="apple-touch-icon" sizes="57x57" href="img/favicons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="img/favicons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="img/favicons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="img/favicons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="img/favicons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="img/favicons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="img/favicons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="img/favicons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/favicons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="img/favicons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="img/favicons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="img/favicons/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="./img/favicons/ms-icon-144x144.png">
+    <meta name="msapplication-TileImage" content="img/favicons/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
 </head>
 <body>
@@ -30,20 +30,22 @@
         <div class="title">
             <h1>Asteroids</h1>
             <h3>An homage to the Atari 800 XL version.</h3>
+            <span>
+                <a href="html/credits.html">Credits</a>
+            </span>
         </div>
         <div class="starship">
-            <img src="./img/starship.png" alt="starship flying and shooting">
+            <img src="img/starship.png" alt="starship flying and shooting">
         </div>
         <div class="instructions">
             <h3 class="instruction-header">Instructions</h3>
             <span>
                 <p>Thrust ... Up Arrow</p>
                 <p>Rotate ... Left / Right Arrow</p>
-                <p>Fire ... Space</p>
+                <p>Fire / Start ... Space</p>
             </span>
             <span>
-                <p>Pause ... P</p>
-                
+                <p>Pause ... P</p> 
                 <p>Music . (On/Off) ... M</p>
                 <p>Sound . (On/Off) ... S</p>
             </span>
@@ -51,6 +53,7 @@
     </header>
 
     <div class="wrapper">
+        <h3 id="start-message" class="start-wait">Press Space to Begin!</h3>
         <canvas id="gameCanvas" 
             style="border:1px solid #7a0000;">
             Your browser does not support the canvas element.
@@ -58,13 +61,13 @@
     </div>
 </body>
     <script src="https://cdn.jsdelivr.net/npm/howler@2.1.2/dist/howler.min.js"></script>
-    <script src="/js/canvas.js"></script>
-    <script src="/js/sounds.js"></script>
-    <script src="/js/random.js"></script>
-    <script src="/js/stats.js"></script>
-    <script src="/js/ship.js"></script>
-    <script src="/js/bolts.js"></script>
-    <script src="/js/asteroid.js"></script>
-    <script src="/js/collisions.js"></script>
-    <script src="/js/game_main.js"></script>
+    <script src="js/canvas.js"></script>
+    <script src="js/sounds.js"></script>
+    <script src="js/random.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/ship.js"></script>
+    <script src="js/bolts.js"></script>
+    <script src="js/asteroid.js"></script>
+    <script src="js/collisions.js"></script>
+    <script src="js/game_main.js"></script>
 </html>

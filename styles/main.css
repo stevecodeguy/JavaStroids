@@ -33,6 +33,19 @@ header .title h1 {
 header .title h3 {
   font-size: 0.8em;
   padding: 0;
+  margin-bottom: 8px;
+}
+header .title span {
+  display: block;
+}
+header .title span a {
+  text-decoration: none;
+  color: lightgreen;
+  font-size: 0.7em;
+  text-align: center;
+  text-shadow: 0px 0px 10px greenyellow;
+  padding-right: 10px;
+  float: right;
 }
 header p {
   font-size: 0.7em;
@@ -64,15 +77,43 @@ header .instructions span p {
 }
 
 body {
-  background: url("/img/nathan-anderson-108136-unsplash.jpg");
+  background: url("../img/nathan-anderson-108136-unsplash.jpg");
   background-size: cover;
   color: #554f0f;
+}
+body .thanks {
+  padding: 35px;
+}
+body .articles {
+  display: flex;
+  justify-content: space-evenly;
+}
+body .articles article {
+  padding: 80px;
+}
+body .articles article h3 {
+  color: white;
+}
+body .return {
+  padding: 35px;
+  text-decoration: none;
+  color: lightgreen;
+  font-size: 1.2em;
+  text-shadow: 0px 0px 10px greenyellow;
 }
 
 .wrapper {
   background-color: rgba(0, 0, 0, 0.45);
   height: 100%;
   width: 100%;
+}
+.wrapper .start-wait {
+  color: white;
+  position: absolute;
+  z-index: 9;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 @media (max-width: 1024px) {

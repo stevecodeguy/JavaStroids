@@ -27,11 +27,6 @@ var thruster = new Howl({
     preload: true
 });
 
-var gameOverMusic = new Howl({ 
-    src: ['../sounds/game_over.wav'] ,
-    preload: true
-});
-
 var theme = new Howl({ 
     src: ['../sounds/theme.wav'],
     volume: 0.5,
@@ -67,5 +62,4 @@ function mute(toMute) {
             soundMute = true;
         }
     }
-    console.log(musicMute, soundMute);
 }

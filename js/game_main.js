@@ -5,6 +5,7 @@ let gameOver = false;
 let score = 0;
 let nextLife = 5000;
 let lives = 3;
+let running = false;
 
 // Sound variables
 
@@ -87,7 +88,7 @@ function draw() {
         // }
         // if(y + dy > canvas.height-(shipRadius * 2) || y + dy < 0) {
         //     dy = -dy;
-        // }
+        // } To implement later
 
         if (rotateRight) {
             angle += 1.5;
@@ -173,12 +174,18 @@ function keyDownHandler(event) {
         case "Spacebar":
         case " ":
             {
-                if (gameOver && pause) {
-                    if (event.key === "Spacebar" || event.key === " ") {
-                        reInitGame();
+                if (running) {
+                    if (gameOver && pause) {
+                        if (event.key === "Spacebar" || event.key === " ") {
+                            reInitGame();
+                        }
+                    } else {
+                        shoot = true;
                     }
                 } else {
-                    shoot = true;
+                    document.getElementById('start-message').remove('start-wait');
+                    running = true;
+                    startGame();
                 }
             }
             break;
@@ -266,8 +273,11 @@ function step() {
     playGame = window.requestAnimationFrame(step);
 }
 
-playGame = window.requestAnimationFrame(step);
-theme.play();
+function startGame() {
+    playGame = window.requestAnimationFrame(step);
+    theme.play();
+}
+
 
 window.addEventListener("keydown", keyDownHandler, false);
 window.addEventListener("keyup", keyUpHandler, false, );
