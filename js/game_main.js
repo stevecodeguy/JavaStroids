@@ -217,21 +217,21 @@ function keyUpHandler(event) {
     switch(event.key){
         case "Right":
         case "ArrowRight":
-                rotateRight = false;
-                break;
+            rotateRight = false;
+            break;
         case "Left":
         case "ArrowLeft":
-                rotateLeft = false;
-                break;
+            rotateLeft = false;
+            break;
         case "Up":
         case "ArrowUp":
-                thruster.stop();
-                thrust = false;
-                break;
+            thruster.pause();
+            thrust = false;
+            break;
         case "Spacebar":
         case " ":
-                shoot = false;
-                break;
+            shoot = false;
+            break;
         default:
             return false;
     }
@@ -278,9 +278,8 @@ function startGame() {
     theme.play();
 }
 
-
 window.addEventListener("keydown", keyDownHandler, false);
-window.addEventListener("keyup", keyUpHandler, false, );
+window.addEventListener("keyup", keyUpHandler, false);
 
 window.addEventListener('resize', resizeTimer);
 
