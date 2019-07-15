@@ -60,8 +60,8 @@ class Bolt {
                 }
             
                 if (y < -10) {
-                    y = ctx.canvas.height;
-                } else if (y > ctx.canvas.height + 10) {
+                    y = (ctx.canvas.height - 100);
+                } else if (y > ctx.canvas.height - 90) {
                     y = 0;
                 }
 

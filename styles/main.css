@@ -1,12 +1,70 @@
+@font-face {
+  font-family: "spacey";
+  src: url("../fonts/Spaceport_2006.otf");
+}
 html,
 body {
   margin: 0;
   padding: 0;
   overflow: hidden;
+  font-family: "spacey", cursive;
+}
+
+header {
+  display: flex;
+  justify-content: space-around;
+  height: 100px;
+  white-space: nowrap;
+}
+header h1, header h3 {
+  font-family: "spacey", cursive;
+  color: whitesmoke;
+  text-align: center;
+}
+header h1 {
+  font-size: 2em;
+}
+header h3 {
+  font-size: 0.9em;
+}
+header .title h1 {
+  margin: 15px;
+}
+header .title h3 {
+  font-size: 0.8em;
+  padding: 0;
+}
+header p {
+  font-size: 0.7em;
+  color: beige;
+}
+header .starship {
+  display: flex;
+  justify-content: center;
+  padding: 15px;
+  width: 140px;
+}
+header .starship img {
+  height: 100%;
+  width: auto;
+}
+header .instructions h3 {
+  margin: 15px 5px 5px 5px;
+}
+header .instructions span {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+header .instructions span p {
+  line-height: 10px;
+  padding: 5px 18px 5px 0;
+  margin: 3px 0;
+  text-align: center;
 }
 
 body {
-  background: url("./img/nathan-anderson-108136-unsplash.jpg");
+  background: url("/img/nathan-anderson-108136-unsplash.jpg");
   background-size: cover;
   color: #554f0f;
 }
@@ -15,6 +73,17 @@ body {
   background-color: rgba(0, 0, 0, 0.45);
   height: 100%;
   width: 100%;
+}
+
+@media (max-width: 1024px) {
+  header .starship {
+    display: none;
+  }
+}
+@media (max-width: 830px) {
+  header .instructions {
+    display: none;
+  }
 }
 
 /*# sourceMappingURL=main.css.map */

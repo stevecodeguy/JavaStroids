@@ -1,5 +1,3 @@
-// const {Howl, Howler} = require('howler');
-
 // Game variables
 
 let pause = false;
@@ -7,6 +5,11 @@ let gameOver = false;
 let score = 0;
 let nextLife = 5000;
 let lives = 3;
+
+// Sound variables
+
+let musicMute = false;
+let soundMute = false;
 
 //Ship variables
 
@@ -40,12 +43,12 @@ const endGameMessage = time => new Promise(resolve => {
     if (lives < 1) {
         timeOut = setTimeout(() => {
             ctx.save();
-            ctx.font = "50px Lucida Console";
+            ctx.font = "50px spacey";
             ctx.fillStyle = "white";
             ctx.textAlign = "center";
-            ctx.fillText("GAME OVER", (ctx.canvas.width - 2) / 2, (ctx.canvas.height - 2) / 2);
-            ctx.font = "30px Lucida Console";
-            ctx.fillText("Press Space to play again!", (ctx.canvas.width - 2) / 2, ((ctx.canvas.height - 2) / 2) + 60);
+            ctx.fillText("GAME OVER", (ctx.canvas.width - 2) / 2, ( (ctx.canvas.height - 100) - 2) / 2);
+            ctx.font = "25px spacey";
+            ctx.fillText("Press Space to play again!", (ctx.canvas.width - 2) / 2, (((ctx.canvas.height - 100) - 2) / 2) + 60);
             ctx.restore();
             clearTimeout(timeOut);
             resolve();
@@ -56,12 +59,12 @@ const endGameMessage = time => new Promise(resolve => {
 function pauseMessage() {
     if (!gameOver){
         ctx.save();
-        ctx.font = "50px Lucida Console";
+        ctx.font = "50px spacey";
         ctx.fillStyle = "white";
         ctx.textAlign = "center";
-        ctx.fillText("PAUSED", (ctx.canvas.width - 2) / 2, (ctx.canvas.height - 2) / 2);
-        ctx.font = "30px Lucida Console";
-        ctx.fillText("Press P to unpause", (ctx.canvas.width - 2) / 2, ((ctx.canvas.height - 2) / 2) + 60);
+        ctx.fillText("PAUSED", (ctx.canvas.width - 2) / 2, ( (ctx.canvas.height - 100) - 2) / 2);
+        ctx.font = "25px spacey";
+        ctx.fillText("Press 'P' to unpause", (ctx.canvas.width - 2) / 2, (( (ctx.canvas.height - 100) - 2) / 2) + 60);
         ctx.restore();
     };
 };
@@ -121,7 +124,7 @@ function draw() {
                     xDrift = 0;
                     yDrift = 0;
                     xShip = (ctx.canvas.width - 2) / 2;
-                    yShip = (ctx.canvas.height - 2 ) / 2;
+                    yShip = ( (ctx.canvas.height - 100) - 2 ) / 2;
                     alive = true;
                 }
             }
@@ -142,7 +145,7 @@ function draw() {
 
         if (yShip < 0) {
             yShip = ctx.canvas.height;
-        } else if (yShip > ctx.canvas.height) {
+        } else if (yShip > (ctx.canvas.height) ) {
             yShip = 0;
         }
 
@@ -152,7 +155,7 @@ function draw() {
 }
 
 function keyDownHandler(event) {
-    // event.preventDefault();
+    event.preventDefault();
     switch(event.key){
         case "Right":
         case "ArrowRight":
@@ -191,13 +194,19 @@ function keyDownHandler(event) {
                 }
             }
             break;
+        case "m":
+            mute('music');
+            break;
+        case "s":
+            mute('sound');
+            break;
         default:
             return false;
     }
 }
 
 function keyUpHandler(event) {
-    // event.preventDefault();
+    event.preventDefault();
     switch(event.key){
         case "Right":
         case "ArrowRight":
@@ -246,7 +255,7 @@ function reInitGame() {
     asteroids.addAsteroid(rockSize, asteroidCount);
 
     xShip = (ctx.canvas.width - 2) / 2;
-    yShip = (ctx.canvas.height - 2 ) / 2;
+    yShip = ( (ctx.canvas.height) - 2 ) / 2;
 
     ctx.beginPath();
     ctx.clearRect(0, 0, canvas.width, canvas.height);

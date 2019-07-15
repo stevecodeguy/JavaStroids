@@ -1,10 +1,10 @@
 function stats() {
     ctx.save();
-    ctx.font = "30px Lucida Console";
+    ctx.font = "20px spacey";
     ctx.fillStyle = "#00ffff";
     ctx.textAlign = "center";
-    ctx.fillText("SCORE " + score, scorePositionX, 40);
-    ctx.fillText("LIVES " + lives, 70, 40);
+    ctx.fillText("SCORE   " + score, scorePositionX, 40);
+    ctx.fillText("LIVES   " + lives, 100, 40);
     ctx.restore();
 }
 

@@ -88,8 +88,8 @@ class Asteroid {
             }
         
             if (y < -rockSize - 10) {
-                y = ctx.canvas.height;
-            } else if (y > ctx.canvas.height + rockSize + 10) {
+                y = (ctx.canvas.height - 100);
+            } else if (y > ctx.canvas.height + rockSize - 90) {
                 y = -rockSize - 10;
             }
 
