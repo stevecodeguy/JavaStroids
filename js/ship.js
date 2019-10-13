@@ -90,7 +90,7 @@ class Remnants {
                 id : remnants.length,
                 x : x,   
                 y : y,
-                angle : randA(),
+                angle : randMinMax(0, 360),
                 xOrigin : x,
                 yOrigin : y,
                 distance : 0
@@ -108,7 +108,7 @@ class Remnants {
             let yOrigin = remnants[i].yOrigin;
             let distance = remnants[i].distance;
 
-            if (distance < randA() * 30) {
+            if (distance < randMinMax(0, 360) * 30) {
                 x += Math.cos( (angle - 90) * Math.PI / 180);
                 y += Math.sin( (angle - 90) * Math.PI / 180);
 

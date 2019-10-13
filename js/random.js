@@ -36,20 +36,6 @@ function randYAsteroid(){
     }
 }
 
-function randA(){
-    const min = 0;
-    const max = 360;  
-    return Math.floor(Math.random() * (max - min) + min);
-}
-
-function randSize(){
-    const min = 0;
-    const max = 20;  
-    return Math.floor(Math.random() * (max - min) + min);
-}
-
-function randPop(){
-    const min = 10;
-    const max = 40;  
+function randMinMax(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
